@@ -1,0 +1,45 @@
+﻿<h2>ASP.NET Fluent Email Implementations</h2>
+<hr />
+<input type="text" id="ReceiverEmail" class="form-control col-sm-6" value="shahedbddev@gmail.com"
+    placeholder="Receiver Email" />
+<hr />
+<button type="button" class="btn btn-success" onclick="SendEmail()" id="btnSendEmail">
+    <i class="fa fa-envelope" style="font-size:36px;"> Send Email</i>
+</button>
+<hr />
+
+<h4 id="SendEmalMessage"></h4>
+
+
+<script>
+    setTimeout(function () {
+        $('#ReceiverEmail').focus();
+        $('#ReceiverEmail').select();
+    }, 200);
+
+    var SendEmail = function () {
+        $("#btnSendEmail").html('<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span><b>Please Wait...</b></span>');
+        $('#btnSendEmail').attr('disabled', 'disabled');
+        $("#SendEmalMessage").html('');
+
+        var _ReceiverEmail = $('#ReceiverEmail').val();
+        $.ajax({
+            type: "GET",
+            url: "/Email/SendSingleEmail?ReceiverEmail=" + _ReceiverEmail,
+            success: function (result) {
+                setTimeout(function () {
+                    $("#btnSendEmail").html('<i class="fa fa-envelope" style="font-size:36px;"> Send Email</i>');
+                    $('#btnSendEmail').removeAttr('disabled');
+                    $("#SendEmalMessage").html(result);
+                }, 200);
+
+                setTimeout(function () {
+                    $("#SendEmalMessage").html('');
+                }, 3000);
+            },
+            error: function (response) {
+                console.log(response.responseText);
+            }
+        });
+    }
+</script>
